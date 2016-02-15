@@ -4,7 +4,7 @@
 #
 Name     : zake
 Version  : 0.2.2
-Release  : 16
+Release  : 17
 URL      : https://pypi.python.org/packages/source/z/zake/zake-0.2.2.tar.gz
 Source0  : https://pypi.python.org/packages/source/z/zake/zake-0.2.2.tar.gz
 Summary  : A python package that works to provide a nice set of testing utilities for the kazoo library.
