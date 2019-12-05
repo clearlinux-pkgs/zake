@@ -4,7 +4,7 @@
 #
 Name     : zake
 Version  : 0.2.2
-Release  : 32
+Release  : 33
 URL      : https://files.pythonhosted.org/packages/ac/00/a322966639ce1b754475d2e83f169d32973be3ebbd6fc19344267d363627/zake-0.2.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/ac/00/a322966639ce1b754475d2e83f169d32973be3ebbd6fc19344267d363627/zake-0.2.2.tar.gz
 Summary  : A python package that works to provide a nice set of testing utilities for the kazoo library.
