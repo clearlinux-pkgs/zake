@@ -4,31 +4,49 @@
 #
 Name     : zake
 Version  : 0.2.2
-Release  : 34
+Release  : 35
 URL      : https://files.pythonhosted.org/packages/ac/00/a322966639ce1b754475d2e83f169d32973be3ebbd6fc19344267d363627/zake-0.2.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/ac/00/a322966639ce1b754475d2e83f169d32973be3ebbd6fc19344267d363627/zake-0.2.2.tar.gz
 Summary  : A python package that works to provide a nice set of testing utilities for the kazoo library.
 Group    : Development/Tools
 License  : Apache-2.0
-Requires: zake-python3
-Requires: zake-python
+Requires: zake-python = %{version}-%{release}
+Requires: zake-python3 = %{version}-%{release}
 Requires: kazoo
 Requires: six
 BuildRequires : buildreq-distutils3
 BuildRequires : kazoo
-BuildRequires : pbr
-BuildRequires : pip
-BuildRequires : python3-dev
-BuildRequires : setuptools
 BuildRequires : six
 
 %description
+Zake
 ====
+
+.. image:: https://travis-ci.org/yahoo/Zake.png?branch=master
+   :target: https://travis-ci.org/yahoo/Zake
+
+
+A python package that works to provide a nice set of testing utilities for the `kazoo`_ library.
+
+It includes the following functionality:
+
+* Storage access (for viewing what was saved/created).
+* Kazoo *mostly* compatible client API.
+* Sync/transaction/create/get/delete... commands.
+* Listener support.
+* And more...
+
+It simplifies testing by providing a client that has a similar API as the kazoo
+client so that your tests (or applications/libraries that use kazoo) do not
+require a real zookeeper server to be  tested with (since this is not available
+in all testing environments).
+
+.. _kazoo: https://kazoo.readthedocs.org/en/latest/
 
 %package python
 Summary: python components for the zake package.
 Group: Default
-Requires: zake-python3
+Requires: zake-python3 = %{version}-%{release}
 
 %description python
 python components for the zake package.
@@ -38,6 +56,7 @@ python components for the zake package.
 Summary: python3 components for the zake package.
 Group: Default
 Requires: python3-core
+Provides: pypi(zake)
 
 %description python3
 python3 components for the zake package.
@@ -45,18 +64,27 @@ python3 components for the zake package.
 
 %prep
 %setup -q -n zake-0.2.2
+cd %{_builddir}/zake-0.2.2
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1532377806
-python3 setup.py build -b py3
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1582849423
+# -Werror is for werrorists
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
+export MAKEFLAGS=%{?_smp_mflags}
+python3 setup.py build
 
 %install
+export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
-python3 -tt setup.py build -b py3 install --root=%{buildroot}
+python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
